@@ -44,12 +44,16 @@ The expectation depends only on the environment. This means that it is possible 
 - Target network for y_t
 
 ## Algorithms
+- The algorithms is based on DPG. DPG maintais a para
 
 ## Results
 
+
 ## Related Work
 
+
 ## Conclusion
+
 
 ## Implementation Details
 - Adam Optimizer with learning rate 10^-4 and 10^-3 for the actor and critic respectively.
