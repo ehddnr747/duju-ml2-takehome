@@ -80,9 +80,26 @@ networks are then updated by having them slowly track the learned networks. `p' 
 ![algo1]()  
 
 ## Results
+- The algorithm is tested on simulations using MujoCo.
+![fig1]()  
+In order from the left: the cartpole swing-up task, a reaching task, a gasp and move task, a puck-hitting task, a monoped balancing task, two locomotion tasks and Torcs (driving simulator).  
+- In all tasks, they ran experiments using both a low-dimensional state description (such as joint angles and positions) and high-dimensional renderings of the environment.
+  -- They used action repeats as DQN for high dimensional renderings in order to make the problems approximately fully observable.
+- Below is the performance curve.
+![fig2]()  
+original DPG
+algorithm (minibatch NFQCA) with batch normalization (light grey), with target network (dark grey), with target networks and batch normalization (green), with target networks from pixel-only inputs (blue).  
+- In particular, learning without a target network, as in the original work with DPG, is very poor in many environments.
+- Surprisingly, in some simpler tasks, learning policies from pixels is just as fast as learning using the low-dimensional state descriptor.
+- Below is performance table.
+![table1]()
+  - The performance is normalized using two baseline.
+  - The first baseline is the mean return from a naive policy which samples actions from a uniform distribution over the valid action space.
+  - The second baseline is iLQG (Todorov & Li, 2005), a planning based solver with full access to the underlying physical model and its derivatives.
+- It can be challenging to learn accurate value estimates. Q-learning, for example, is prone to overestimating values (Hasselt, 2010).
+![fig3]()
+- In simple tasks DDPG estimates returns accurately without systematic biases. For harder tasks the Q estimates are worse, but DDPG is still able learn good policies.
 
-
-## Related Work
 
 
 ## Conclusion
