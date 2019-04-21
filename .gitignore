@@ -3,4 +3,4 @@ MUJOCO_LOG.TXT
 *.pyc
 __pycache__
 !/.gitignore
-.*
+.idea
