@@ -30,16 +30,18 @@ In the paper the authors propose an Actor-Critic, off-policy model-free algorith
   - state space _S_, action space _A_
   - initial state distribution _p(s1)_
   - transition dynamics _p(s\_(t+1)|s\_t,a\_t)_
-  - return(discounted future reward) ![return]()
+  - return(discounted future reward) <img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/return.png" width="200">
   - discounting factor _gamma_ in [0,1]
-- Goal is maximizing the expected return from the start distribution ![J](). We denote the discounted state visitation distribution for a policy _pi_ as ![rho^pi]()
-- Action Value Function (Q-function) ![eq1]()  
-Recursive representation of Q function ![eq2]()  
-If the policy is deterministic ![eq3]()  
+- Goal is maximizing the expected return from the start distribution <img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/J.png" width="200">. We denote the discounted state visitation distribution for a policy _pi_ as <img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/rho_pi.png" width="30">
+- Action Value Function (Q-function)  
+  <img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/eq1.png" width="500">  
+Recursive representation of Q function  
+  <img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/eq2.png" width="500">  
+If the policy is deterministic  
+  <img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/eq3.png" width="500">  
 The expectation depends only on the environment. This means that it is possible to learn Q offpolicy, using transitions which are generated from a different stochastic behavior policy.
-- Loss for Q
-![eq4]()  
-![eq5]()
+- Loss for Q  
+<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/eq4_5.png" width="200">
 - Replay buffer
 - Target network for y_t
 
@@ -47,7 +49,7 @@ The expectation depends only on the environment. This means that it is possible 
 DDPG is an actor-critic based on the DPG algorithm.  
 ### DPG
 The DPG algorithm maintains a parameterized actor function _mu(s)_ which specifies the current policy by deterministically mapping states to a specific action. The critic _Q(s,a)_ is learned using the Bellman equation as in Q-learning. The actor is updated by following the applying the chain rule to the expected return from the start distribution J with respect to the actor parameters.  
-![eq6]()  
+<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/eq6.png" width="500">  
 The authors' contribution here is to provide modifications to DPG, inspired by the success of DQN, which allow it to use neural network function approximators to learn in large state and action spaces online.  
 
 ### Replay buffer
@@ -73,31 +75,30 @@ networks are then updated by having them slowly track the learned networks. `p' 
 ### Exploration - Ornstein-Uhlenbeck process
 - A major challenge of learning in continuous action spaces is exploration.
 - An advantage of offpolicies algorithms such as DDPG is that we can treat the problem of exploration independently from the learning algorithm.
-![eq7]()  
+<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/eq7.png" width="300">  
 - The authors used an Ornstein-Uhlenbeck process (Uhlenbeck & Ornstein, 1930) to generate temporally correlated exploration for exploration efficiency in physical control problems with inertia.
 
 ### DDPG algorithm and training process
-![algo1]()  
+<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/algo1.png" width="800">   
 
 ## Results
 - The algorithm is tested on simulations using MujoCo.
-![fig1]()  
+<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/fig1.png" width="800">     
 In order from the left: the cartpole swing-up task, a reaching task, a gasp and move task, a puck-hitting task, a monoped balancing task, two locomotion tasks and Torcs (driving simulator).  
 - In all tasks, they ran experiments using both a low-dimensional state description (such as joint angles and positions) and high-dimensional renderings of the environment.
   -- They used action repeats as DQN for high dimensional renderings in order to make the problems approximately fully observable.
 - Below is the performance curve.
-![fig2]()  
-original DPG
-algorithm (minibatch NFQCA) with batch normalization (light grey), with target network (dark grey), with target networks and batch normalization (green), with target networks from pixel-only inputs (blue).  
+<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/fig2.png" width="800">  
+original DPG algorithm (minibatch NFQCA) with batch normalization (light grey), with target network (dark grey), with target networks and batch normalization (green), with target networks from pixel-only inputs (blue).  
 - In particular, learning without a target network, as in the original work with DPG, is very poor in many environments.
 - Surprisingly, in some simpler tasks, learning policies from pixels is just as fast as learning using the low-dimensional state descriptor.
 - Below is performance table.
-![table1]()
+<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/table1.png" width="800">   
   - The performance is normalized using two baseline.
   - The first baseline is the mean return from a naive policy which samples actions from a uniform distribution over the valid action space.
   - The second baseline is iLQG (Todorov & Li, 2005), a planning based solver with full access to the underlying physical model and its derivatives.
 - It can be challenging to learn accurate value estimates. Q-learning, for example, is prone to overestimating values (Hasselt, 2010). This work is extended to TD3.
-![fig3]()
+<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/fig3.png" width="800">   
 - In simple tasks DDPG estimates returns accurately without systematic biases. For harder tasks the Q estimates are worse, but DDPG is still able learn good policies.
 
 
