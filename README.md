@@ -41,7 +41,7 @@ If the policy is deterministic
   <img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/eq3.png" width="500">  
 The expectation depends only on the environment. This means that it is possible to learn Q offpolicy, using transitions which are generated from a different stochastic behavior policy.
 - Loss for Q  
-<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/eq4_5.png" width="200">
+<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/eq4_5.png" width="500">
 - Replay buffer
 - Target network for y_t
 
@@ -125,3 +125,7 @@ For the stable training process, I didn't include l2 norm regularization and bat
 ## Experiment Instruction
 
 ## Experiment Results
+
+<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/inverted_pendulum.png" width="500">   
+
+<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/inverted_half_cheetah.png" width="500">   
