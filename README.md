@@ -96,7 +96,7 @@ algorithm (minibatch NFQCA) with batch normalization (light grey), with target n
   - The performance is normalized using two baseline.
   - The first baseline is the mean return from a naive policy which samples actions from a uniform distribution over the valid action space.
   - The second baseline is iLQG (Todorov & Li, 2005), a planning based solver with full access to the underlying physical model and its derivatives.
-- It can be challenging to learn accurate value estimates. Q-learning, for example, is prone to overestimating values (Hasselt, 2010).
+- It can be challenging to learn accurate value estimates. Q-learning, for example, is prone to overestimating values (Hasselt, 2010). This work is extended to TD3.
 ![fig3]()
 - In simple tasks DDPG estimates returns accurately without systematic biases. For harder tasks the Q estimates are worse, but DDPG is still able learn good policies.
 
