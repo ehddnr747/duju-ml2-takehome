@@ -41,7 +41,7 @@ If the policy is deterministic
   <img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/eq3.png" width="500">  
 The expectation depends only on the environment. This means that it is possible to learn Q offpolicy, using transitions which are generated from a different stochastic behavior policy.
 - Loss for Q  
-<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/eq4_5.png" width="500">
+  <img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/eq4_5.png" width="500">
 - Replay buffer
 - Target network for y_t
 
@@ -49,7 +49,7 @@ The expectation depends only on the environment. This means that it is possible 
 DDPG is an actor-critic based on the DPG algorithm.  
 ### DPG
 The DPG algorithm maintains a parameterized actor function _mu(s)_ which specifies the current policy by deterministically mapping states to a specific action. The critic _Q(s,a)_ is learned using the Bellman equation as in Q-learning. The actor is updated by following the applying the chain rule to the expected return from the start distribution J with respect to the actor parameters.  
-<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/eq6.png" width="500">  
+  <img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/eq6.png" width="500">  
 The authors' contribution here is to provide modifications to DPG, inspired by the success of DQN, which allow it to use neural network function approximators to learn in large state and action spaces online.  
 
 ### Replay buffer
@@ -75,7 +75,7 @@ networks are then updated by having them slowly track the learned networks. `p' 
 ### Exploration - Ornstein-Uhlenbeck process
 - A major challenge of learning in continuous action spaces is exploration.
 - An advantage of offpolicies algorithms such as DDPG is that we can treat the problem of exploration independently from the learning algorithm.
-<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/eq7.png" width="300">  
+  <img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/eq7.png" width="300">  
 - The authors used an Ornstein-Uhlenbeck process (Uhlenbeck & Ornstein, 1930) to generate temporally correlated exploration for exploration efficiency in physical control problems with inertia.
 
 ### DDPG algorithm and training process
@@ -123,9 +123,31 @@ original DPG algorithm (minibatch NFQCA) with batch normalization (light grey), 
 For the stable training process, I didn't include l2 norm regularization and batch normalization in this implementation.
 
 ## Experiment Instruction
+The agent is trained on OpenAI Gym Mujoco control tasks.
+### Requirements
+- Non-python
+  - openCV
+  - mujoco
+- Python
+  - gym
+  - cv2
+  - torch
+
+The script for DDPG is at _ddpg_ directory. By typing the bash script below, you can train an agent for a specific task. The script will create a directory for the records of experiments(e.g. rewards, videos, graph)  
+```
+python ddpg.py --task=InvertedPendulum-v2
+python ddpg.py --task=HalfCheetah-v2
+```
 
 ## Experiment Results
+You can find the trained agent below.
+### Inverted Pendulum v2
+<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/ddpg/20190422_035056_InvertedPendulum-v2/rewards.png" width="600">   
+<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/inverted_pendulum.gif" width="300">   
+https://youtu.be/KKp3w3aWsTA  
 
-<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/inverted_pendulum.png" width="500">   
 
-<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/inverted_half_cheetah.png" width="500">   
+### Half Cheetah v2
+<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/ddpg/20190422_035344_HalfCheetah-v2/rewards.png" width="600">  
+<img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/half_cheetah.gif" width="300">   
+https://youtu.be/iXSRwjpP3ak  
