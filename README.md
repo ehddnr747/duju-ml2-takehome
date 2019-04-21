@@ -44,20 +44,70 @@ The expectation depends only on the environment. This means that it is possible 
 - Target network for y_t
 
 ## Algorithms
-- The algorithms is based on DPG. DPG maintais a para
+DDPG is an actor-critic based on the DPG algorithm.  
+### DPG
+The DPG algorithm maintains a parameterized actor function _mu(s)_ which specifies the current policy by deterministically mapping states to a specific action. The critic _Q(s,a)_ is learned using the Bellman equation as in Q-learning. The actor is updated by following the applying the chain rule to the expected return from the start distribution J with respect to the actor parameters.  
+![eq6]()  
+The authors' contribution here is to provide modifications to DPG, inspired by the success of DQN, which allow it to use neural network function approximators to learn in large state and action spaces online.  
+
+### Replay buffer
+- In reinforcement learning, the assumption that the samples are independently and identically distributed does not hold, while most optimization algorithms assume it.
+- Additionally, with mini-batches, we can make efficient use of hardware optimizations.
+- To allow the algorithm to benefit from learning across a set of uncorrelated transitions, DDPG uses Replay buffer.
+- Replay buffer stores transition tuple _(s\_t, a\_t, r\_t, s\_(t+1))_
+- The buffer size can be large ~ 1e6.  
+
+
+### Soft target updates
+- Directly implementing Q learning with neural networks proved to be unstable in many environments. Q is prone to divergence.  
+- The author's solution is __Soft target update__.
+- They create a copy of the actor and critic networks that are used for calculating the target values. The weights of these target
+networks are then updated by having them slowly track the learned networks. `p' = tau*p + (1-tau)*p' with tau << 1`.
+- This means that the target values are constrained to change slowly, greatly improving the stability of learning.  
+
+### Batch normalization
+- When learning from low dimensional feature vector observations, the different components of the observation may have different physical units (for example, positions versus velocities) and the ranges may vary across environments.
+- The solution is __Batch normalization__.
+- It maintains a running average of the mean and variance to use for normalization during testing.
+
+### Exploration - Ornstein-Uhlenbeck process
+- A major challenge of learning in continuous action spaces is exploration.
+- An advantage of offpolicies algorithms such as DDPG is that we can treat the problem of exploration independently from the learning algorithm.
+![eq7]()  
+- The authors used an Ornstein-Uhlenbeck process (Uhlenbeck & Ornstein, 1930) to generate temporally correlated exploration for exploration efficiency in physical control problems with inertia.
+
+### DDPG algorithm and training process
+![algo1]()  
 
 ## Results
+- The algorithm is tested on simulations using MujoCo.
+![fig1]()  
+In order from the left: the cartpole swing-up task, a reaching task, a gasp and move task, a puck-hitting task, a monoped balancing task, two locomotion tasks and Torcs (driving simulator).  
+- In all tasks, they ran experiments using both a low-dimensional state description (such as joint angles and positions) and high-dimensional renderings of the environment.
+  -- They used action repeats as DQN for high dimensional renderings in order to make the problems approximately fully observable.
+- Below is the performance curve.
+![fig2]()  
+original DPG
+algorithm (minibatch NFQCA) with batch normalization (light grey), with target network (dark grey), with target networks and batch normalization (green), with target networks from pixel-only inputs (blue).  
+- In particular, learning without a target network, as in the original work with DPG, is very poor in many environments.
+- Surprisingly, in some simpler tasks, learning policies from pixels is just as fast as learning using the low-dimensional state descriptor.
+- Below is performance table.
+![table1]()
+  - The performance is normalized using two baseline.
+  - The first baseline is the mean return from a naive policy which samples actions from a uniform distribution over the valid action space.
+  - The second baseline is iLQG (Todorov & Li, 2005), a planning based solver with full access to the underlying physical model and its derivatives.
+- It can be challenging to learn accurate value estimates. Q-learning, for example, is prone to overestimating values (Hasselt, 2010). This work is extended to TD3.
+![fig3]()
+- In simple tasks DDPG estimates returns accurately without systematic biases. For harder tasks the Q estimates are worse, but DDPG is still able learn good policies.
 
-
-## Related Work
 
 
 ## Conclusion
-
+* __Contribution__ : The work combines insights from recent advances in deep learning and reinforcement learning, resulting in an algorithm that robustly solves challenging problems across a variety of domains with continuous action spaces.
+* __Limitation__ : As with most model-free reinforcement approaches, DDPG requires a large number of training episodes to find solutions.
 
 ## Implementation Details
 - Adam Optimizer with learning rate 10^-4 and 10^-3 for the actor and critic respectively.
-- Q : L_2 weight decay of 10^-2
 - discount factor _gamma_ = 0.99
 - soft target updates _tau_ = 0.001
 - final output layer of the actor was a **tanh** layer
@@ -67,3 +117,10 @@ The expectation depends only on the environment. This means that it is possible 
 - minibatch size 64
 - replay buffer size 10^6
 - Ornstein-Uhlenbeck process noise with _theta_=0.15 and _sigma_=0.2
+- ~~Q : L_2 weight decay of 10^-2~~
+- ~~Batch normalization~~  
+For the stable training process, I didn't include l2 norm regularization and batch normalization in this implementation.
+
+## Experiment Instruction
+
+## Experiment Results
