@@ -85,8 +85,8 @@ networks are then updated by having them slowly track the learned networks.
 ## Results
 ### The algorithm is tested on simulations using MujoCo.  
 <img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/fig1.png" width="800">  
-- In order from the left: the cartpole swing-up task, a reaching task, a gasp and move task, a puck-hitting task, a monoped balancing task, two locomotion tasks and Torcs (driving simulator).  
 
+- In order from the left: the cartpole swing-up task, a reaching task, a gasp and move task, a puck-hitting task, a monoped balancing task, two locomotion tasks and Torcs (driving simulator).  
 - In all tasks, they ran experiments using both a low-dimensional state description (such as joint angles and positions) and high-dimensional renderings of the environment.  
   - They used action repeats as DQN for high dimensional renderings in order to make the problems approximately fully observable.  
 
