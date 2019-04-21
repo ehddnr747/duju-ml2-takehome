@@ -92,6 +92,7 @@ networks are then updated by having them slowly track the learned networks.
 
 ### Performance curve.  
 <img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/fig2.png" width="800">  
+
 - original DPG algorithm (minibatch NFQCA) with batch normalization (light grey), with target network (dark grey), with target networks and batch normalization (green), with target networks from pixel-only inputs (blue).  
   - In particular, learning without a target network, as in the original work with DPG, is very poor in many environments.  
   - Surprisingly, in some simpler tasks, learning policies from pixels is just as fast as learning using the low-dimensional state descriptor.  
@@ -143,7 +144,6 @@ python ddpg.py --task=HalfCheetah-v2
 ```
 
 ## Experiment Results
-You can find the trained agent below.
 ### Inverted Pendulum v2
 <img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/ddpg/20190422_035056_InvertedPendulum-v2/rewards.png" width="600">   
 <img src="https://github.com/ehddnr747/duju-ml2-takehome/blob/master/images/inverted_pendulum.gif" width="300">   
