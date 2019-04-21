@@ -1,0 +1,6 @@
+MUJOCO_LOG.TXT
+*.avi
+*.pyc
+__pycache__
+!/.gitignore
+.*
